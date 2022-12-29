@@ -17,7 +17,8 @@ public class Transmission {
 
     private String name;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private TransmissionType type;
 
     private Long speeds;
 }
