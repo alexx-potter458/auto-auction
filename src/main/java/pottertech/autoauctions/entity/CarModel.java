@@ -14,10 +14,14 @@ public class CarModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String generation;
+
     @Column(name = "start_year")
     private Long startYear;
+
     @Column(name = "end_year")
     private Long endYear;
 

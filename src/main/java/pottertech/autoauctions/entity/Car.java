@@ -22,7 +22,7 @@ public class Car {
     @ManyToOne
     @JoinColumn(name="engine_id")
     private Engine engine;
-
+    
     @ManyToOne
     @JoinColumn(name="drivetrain_id")
     private Drivetrain drivetrain;

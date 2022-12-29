@@ -1,6 +1,7 @@
 package pottertech.autoauctions.mapper;
 
 import org.springframework.stereotype.Component;
+import pottertech.autoauctions.dto.PartialUserDto;
 import pottertech.autoauctions.dto.UserDto;
 import pottertech.autoauctions.entity.User;
 
@@ -23,6 +24,14 @@ public class UserMapper {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .isAdmin(user.isAdmin())
+                .build();
+    }
+
+    public PartialUserDto userToPartialUserDto(User user) {
+        return PartialUserDto.builder()
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
+                .email(user.getEmail())
                 .build();
     }
 }

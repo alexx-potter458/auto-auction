@@ -16,12 +16,14 @@ public class Engine {
     private Long id;
 
     private String name;
+
     private Long power;
+
     private Long torque;
+
     private Long capacity;
 
     @ManyToOne
     @JoinColumn(name="fuel_type_id")
     private FuelType fuelType;
-
 }

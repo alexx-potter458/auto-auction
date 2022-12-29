@@ -14,9 +14,13 @@ public class CarDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long kilometrage;
+
     private Long year;
+
     private Long price;
+
     @ManyToOne
     @JoinColumn(name="car_id")
     private Car car;
