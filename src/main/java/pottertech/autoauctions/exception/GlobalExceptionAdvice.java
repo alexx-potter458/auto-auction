@@ -9,4 +9,9 @@ public class GlobalExceptionAdvice {
     public ResponseEntity handle(UserException e) {
         return ResponseEntity.ok().body(e.getMessage());
     }
+
+    @ExceptionHandler({CarException.class})
+    public ResponseEntity handle(CarException e) {
+        return ResponseEntity.ok().body(e.getMessage());
+    }
 }

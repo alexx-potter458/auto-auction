@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{email}")
-    public  ResponseEntity<PartialUserDto> deleteUserByEmail(@PathVariable String email) {
+    public ResponseEntity<PartialUserDto> deleteUserByEmail(@PathVariable String email) {
         return ResponseEntity.ok(this.userService.deleteUserByEmail(email));
     }
 }
