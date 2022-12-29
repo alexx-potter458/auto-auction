@@ -19,7 +19,6 @@ public class Drivetrain {
     @JoinColumn(name="transmission_id")
     private Transmission transmission;
 
-    @OneToOne
-    @JoinColumn(name="traction_id")
+    @Enumerated(EnumType.STRING)
     private TractionType tractionType;
 }

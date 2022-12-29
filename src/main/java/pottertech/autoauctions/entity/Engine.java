@@ -23,7 +23,6 @@ public class Engine {
 
     private Long capacity;
 
-    @ManyToOne
-    @JoinColumn(name="fuel_type_id")
+    @Enumerated(EnumType.STRING)
     private FuelType fuelType;
 }

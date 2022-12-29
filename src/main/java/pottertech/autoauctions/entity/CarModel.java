@@ -25,8 +25,7 @@ public class CarModel {
     @Column(name = "end_year")
     private Long endYear;
 
-    @ManyToOne
-    @JoinColumn(name="chassis_type_id")
+    @Enumerated(EnumType.STRING)
     private ChassisType chassisType;
 
     @ManyToOne
