@@ -21,7 +21,7 @@ public class Engine {
 
     private Long torque;
 
-    private Long capacity;
+    private Double capacity;
 
     @Enumerated(EnumType.STRING)
     private FuelType fuelType;

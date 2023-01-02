@@ -13,5 +13,5 @@ public class TransmissionDto {
     @NotNull(message = "Car transmission name should not be null")
     private String name;
     private TransmissionType type;
-    Long speeds;
+    private Long speeds;
 }

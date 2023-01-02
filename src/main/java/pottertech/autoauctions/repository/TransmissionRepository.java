@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TransmissionRepository extends JpaRepository<Transmission, Long> {
     List<Transmission> findAll();
+    Transmission findOneByName(String name);
 }
