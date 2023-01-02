@@ -4,8 +4,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pottertech.autoauctions.dto.LoginDto;
 import pottertech.autoauctions.dto.PartialUserDto;
 import pottertech.autoauctions.dto.UserDto;
+import pottertech.autoauctions.entity.Token;
 import pottertech.autoauctions.service.implementation.UserServiceImpl;
 import java.util.List;
 
@@ -28,5 +30,10 @@ public class UserController {
     @DeleteMapping("/{email}")
     public ResponseEntity<PartialUserDto> deleteUserByEmail(@PathVariable String email) {
         return ResponseEntity.ok(this.userService.deleteUserByEmail(email));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Token> login(@RequestBody LoginDto loginDto){
+        return ResponseEntity.ok(this.userService.login(loginDto));
     }
 }
