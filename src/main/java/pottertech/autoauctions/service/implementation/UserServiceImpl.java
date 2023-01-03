@@ -8,6 +8,7 @@ import pottertech.autoauctions.dto.PartialUserDto;
 import pottertech.autoauctions.dto.UserDto;
 import pottertech.autoauctions.entity.Token;
 import pottertech.autoauctions.entity.User;
+import pottertech.autoauctions.exception.BadPayloadException;
 import pottertech.autoauctions.exception.UserException;
 import pottertech.autoauctions.mapper.UserMapper;
 import pottertech.autoauctions.repository.TokenRepository;
@@ -68,6 +69,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Token login(LoginDto loginDto) {
         User user = this.userRepository.findOneByEmailAndPassword(loginDto.getEmail(), loginDto.getPassword());
+
+        if (user == null)
+            throw new BadPayloadException(Constants.NO_USER_FOUND_FOR_EMAIL_OR_PASSWORD);
 
         Token token = this.tokenRepository.findOneByUser(user);
 

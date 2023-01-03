@@ -14,4 +14,14 @@ public class GlobalExceptionAdvice {
     public ResponseEntity handle(CarException e) {
         return ResponseEntity.ok().body(e.getMessage());
     }
+
+    @ExceptionHandler({ReportException.class})
+    public ResponseEntity handle(ReportException e) {
+        return ResponseEntity.ok().body(e.getMessage());
+    }
+
+    @ExceptionHandler({BadPayloadException.class})
+    public ResponseEntity handle(BadPayloadException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
 }
