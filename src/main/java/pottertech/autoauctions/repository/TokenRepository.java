@@ -6,4 +6,5 @@ import pottertech.autoauctions.entity.User;
 
 public interface TokenRepository extends JpaRepository<Token, Long> {
     Token findOneByUser(User user);
+    Token findOneByName(String name);
 }

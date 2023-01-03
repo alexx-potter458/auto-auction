@@ -23,6 +23,9 @@ public class CarMapper {
     @Autowired
     DrivetrainRepository drivetrainRepository;
 
+    @Autowired
+    CarRepository carRepository;
+
     public CarManufacturer typeToCarManufacturer(SimpleTypeDto simpleTypeDto) {
         return CarManufacturer.builder()
                 .name(simpleTypeDto.getName())
@@ -70,6 +73,17 @@ public class CarMapper {
                 .carModel(this.carModelRepository.findOneByName(carDto.getCarModel()))
                 .engine(this.engineRepository.findOneByName(carDto.getEngineCode()))
                 .drivetrain(this.drivetrainRepository.findOneByTransmissionAndTractionType(this.transmissionRepository.findOneByName(carDto.getTransmissionName()), carDto.getTractionType()))
+                .build();
+    }
+
+    public CarDetails reportDtoToCarDetails(ReportDto reportDto) {
+        Car car = this.carDtoToCar(reportDto.getCar());
+
+        return CarDetails.builder()
+                .kilometrage(reportDto.getKilometrage())
+                .year(reportDto.getYear())
+                .price(reportDto.getPrice())
+                .car(this.carRepository.findOneByCarModelAndEngineAndDrivetrain(car.getCarModel(), car.getEngine(), car.getDrivetrain()))
                 .build();
     }
 }
