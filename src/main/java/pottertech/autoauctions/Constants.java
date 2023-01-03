@@ -8,4 +8,5 @@ public class Constants {
     public static final String CAR_MANUFACTURER_NOT_EXISTS = "Car manufacturer does not exists exists!";
     public static final String TRANSMISSION_ALREADY_EXISTS = "Transmission already exists!";
     public static final String CAR_MODEL_ALREADY_EXISTS = "Car model already exists!";
+    public static final String NO_REPORT_FOUND = "No report found";
 }

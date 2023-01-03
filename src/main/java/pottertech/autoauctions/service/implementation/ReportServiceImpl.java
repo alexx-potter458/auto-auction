@@ -2,9 +2,11 @@ package pottertech.autoauctions.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pottertech.autoauctions.Constants;
 import pottertech.autoauctions.dto.ReportDto;
 import pottertech.autoauctions.entity.Car;
 import pottertech.autoauctions.entity.Report;
+import pottertech.autoauctions.exception.UserException;
 import pottertech.autoauctions.mapper.CarMapper;
 import pottertech.autoauctions.mapper.ReportMapper;
 import pottertech.autoauctions.repository.CarDetailsRepository;
@@ -33,7 +35,12 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<Report> getAllReports() {
-        return this.reportRepository.findAll();
+        List<Report> reportList = this.reportRepository.findAll();
+
+        if (reportList.isEmpty())
+            throw new UserException(Constants.NO_REPORT_FOUND);
+
+        return reportList;
     }
 
     @Override
