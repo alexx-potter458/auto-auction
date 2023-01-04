@@ -22,4 +22,10 @@ public class Report {
     @OneToOne
     @JoinColumn(name="car_details_id")
     private CarDetails carDetails;
+
+    @Column(name="is_approved")
+    private boolean isApproved;
+
+    @Column(name="is_bought")
+    private boolean isBought;
 }

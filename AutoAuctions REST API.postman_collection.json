@@ -35,7 +35,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstname\": \"Alex\",\r\n    \"lastname\": \"Potter\",\r\n    \"email\": \"alex.potter@gmail.com\",\r\n    \"password\": \"mysecretpass\",\r\n    \"isAdmin\": false\r\n}",
+							"raw": "{\r\n    \"firstname\": \"Marian\",\r\n    \"lastname\": \"Ionescu\",\r\n    \"email\": \"iarian.ionescu@gmail.com\",\r\n    \"password\": \"mysecretpass\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -233,7 +233,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Golf\",\r\n    \"manufacturer\": \"Volkswagen\",\r\n    \"chassisType\": \"WAGON\",\r\n    \"generation\": \"IV\",\r\n    \"startYear\": 1998,\r\n    \"endYear\": 2004\r\n}",
+							"raw": "{\r\n    \"name\": \"Golf IV TDI GTI\",\r\n    \"manufacturer\": \"Volkswagen\",\r\n    \"chassisType\": \"WAGON\",\r\n    \"generation\": \"IV\",\r\n    \"startYear\": 1998,\r\n    \"endYear\": 2004\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -262,7 +262,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"carModel\": \"Golf\",\r\n    \"engineCode\": \"ARL\",\r\n    \"transmissionName\": \"MAN6\",\r\n    \"tractionType\": \"AWD\"\r\n}",
+							"raw": "{\r\n    \"carModel\": \"Golf IV TDI GTI\",\r\n    \"engineCode\": \"ARL\",\r\n    \"transmissionName\": \"MAN6\",\r\n    \"tractionType\": \"AWD\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -289,6 +289,26 @@
 			"name": "Report endpoints",
 			"item": [
 				{
+					"name": "Get report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/report/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"report",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get all reports",
 					"request": {
 						"method": "GET",
@@ -308,13 +328,111 @@
 					"response": []
 				},
 				{
+					"name": "Get all reports  short",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/report/short",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"report",
+								"short"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get filtered reports short",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/report/filtered?maxPrice=3333&minPrice=222&maxKilometrage=423123&minKilometrage=11&maxPower=222&minPower=12&fuelType=DIESEL&tractionType=AWD&maxYear=2019&minYear=1999&gearbox=MANUAL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"report",
+								"filtered"
+							],
+							"query": [
+								{
+									"key": "maxPrice",
+									"value": "3333"
+								},
+								{
+									"key": "minPrice",
+									"value": "222"
+								},
+								{
+									"key": "maxKilometrage",
+									"value": "423123"
+								},
+								{
+									"key": "minKilometrage",
+									"value": "11"
+								},
+								{
+									"key": "maxPower",
+									"value": "222"
+								},
+								{
+									"key": "minPower",
+									"value": "12"
+								},
+								{
+									"key": "fuelType",
+									"value": "DIESEL"
+								},
+								{
+									"key": "tractionType",
+									"value": "AWD"
+								},
+								{
+									"key": "maxYear",
+									"value": "2019"
+								},
+								{
+									"key": "minYear",
+									"value": "1999"
+								},
+								{
+									"key": "gearbox",
+									"value": "MANUAL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add report",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userToken\": \"4c431a34-a34a-4fa7-9523-4f0f31403894\",\r\n    \"kilometrage\": 215132,\r\n    \"year\": 2002,\r\n    \"price\": 1500,\r\n    \"car\": {\r\n        \"carModel\": \"Golf\",\r\n        \"engineCode\": \"ARL\",\r\n        \"transmissionName\": \"DSG7\",\r\n        \"tractionType\": \"AWD\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"userToken\": \"0d5c547c-561a-40b6-a2b8-e0929163688e\",\r\n    \"kilometrage\": 215132,\r\n    \"year\": 2002,\r\n    \"price\": 1500,\r\n    \"car\": {\r\n        \"carModel\": \"Golf IV TDI GTI\",\r\n        \"engineCode\": \"ARL\",\r\n        \"transmissionName\": \"MAN6\",\r\n        \"tractionType\": \"AWD\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -330,6 +448,63 @@
 							"port": "8080",
 							"path": [
 								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve report",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reportId\": 1,\r\n    \"userToken\": \"0d5c547c-561a-40b6-a2b8-e0929163688e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/report",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy car",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reportId\": 1,\r\n    \"userToken\": \"0d5c547c-561a-40b6-a2b8-e0929163688e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/report/buy",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"report",
+								"buy"
 							]
 						}
 					},

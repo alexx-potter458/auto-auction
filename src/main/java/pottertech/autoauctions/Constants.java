@@ -17,4 +17,9 @@ public class Constants {
     public static final String ENGINE_NOT_FOUND = "Engine does not exist!";
     public static final String CAR_MODEL_NOT_FOUND = "Car model does not exist!";
     public static final String DRIVETRAIN_NOT_FOUND = "Drivetrain does not exist!";
+    public static final String WRONG_USER_TOKEN = "No user token found!";
+    public static final String NOT_ADMIN_USER_TOKEN = "Access denied, you are not an admin!";
+    public static final String REPORT_APPROVED = "Report approved!";
+    public static final String CAR_BOUGHT = "Car bought!";
+    public static final String CAR_AlREADY_BOUGHT = "Car already bought!";
 }
