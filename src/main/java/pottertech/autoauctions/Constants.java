@@ -30,4 +30,8 @@ public class Constants {
     public static final String TYPE_NOT_NULL = "Car transmission type should not be null";
     public static final String SPEEDS_NOT_NULL = "Car transmission speeds should not be null";
     public static final String NAME_NOT_NULL = "Name should not be null";
+    public static final String MANUFACTURER_NOT_NULL = "Manufacturer should not be null";
+    public static final String GENERATION_NOT_NULL = "Generation should not be null";
+    public static final String START_YEAR_NOT_NULL = "Start year should not be null";
+    public static final String END_YEAR_NOT_NULL = "End year should not be null";
 }
