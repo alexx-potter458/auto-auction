@@ -22,4 +22,12 @@ public class Constants {
     public static final String REPORT_APPROVED = "Report approved!";
     public static final String CAR_BOUGHT = "Car bought!";
     public static final String CAR_AlREADY_BOUGHT = "Car already bought!";
+    public static final String FIRSTNAME_NOT_NULL = "Firstname should not be null";
+    public static final String LASTNAME_NOT_NULL = "Lastname should not be null";
+    public static final String EMAIL_NOT_NULL = "Email should not be null";
+    public static final String PASSWORD_NOT_NULL = "User password should not be null";
+    public static final String TRANSMISSION_NOT_NULL= "Car transmission name should not be null";
+    public static final String TYPE_NOT_NULL = "Car transmission type should not be null";
+    public static final String SPEEDS_NOT_NULL = "Car transmission speeds should not be null";
+    public static final String NAME_NOT_NULL = "Name should not be null";
 }

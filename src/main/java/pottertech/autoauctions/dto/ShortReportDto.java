@@ -1,6 +1,8 @@
 package pottertech.autoauctions.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import pottertech.autoauctions.Constants;
 
 @Getter
 @Setter

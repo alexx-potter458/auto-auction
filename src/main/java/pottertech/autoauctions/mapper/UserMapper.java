@@ -13,7 +13,7 @@ public class UserMapper {
                 .lastname(userDto.getLastname())
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
-                .isAdmin(userDto.isAdmin())
+                .isAdmin(false)
                 .build();
     }
 
@@ -23,7 +23,6 @@ public class UserMapper {
                 .lastname(user.getLastname())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .isAdmin(user.isAdmin())
                 .build();
     }
 
