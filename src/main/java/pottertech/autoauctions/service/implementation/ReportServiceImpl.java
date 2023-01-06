@@ -20,6 +20,7 @@ import pottertech.autoauctions.repository.CarRepository;
 import pottertech.autoauctions.repository.ReportRepository;
 import pottertech.autoauctions.repository.TokenRepository;
 import pottertech.autoauctions.service.ReportService;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,7 +79,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<ShortReportDto> getFilteredReports(FilterDto parameters) {
-        return this.reportRepository.findAll()
+        List<ShortReportDto> reportList = this.reportRepository.findAll()
                 .stream()
                 .filter(report -> this.verifyGreaterNumber(parameters.getMaxPower(), report.getCarDetails().getCar().getEngine().getPower()))
                 .filter(report -> this.verifyGreaterNumber(parameters.getMaxKilometrage(), report.getCarDetails().getKilometrage()))
@@ -88,12 +89,16 @@ public class ReportServiceImpl implements ReportService {
                 .filter(report -> this.verifyGreaterNumber(report.getCarDetails().getKilometrage(), parameters.getMinKilometrage()))
                 .filter(report -> this.verifyGreaterNumber(report.getCarDetails().getPrice(), parameters.getMinPrice()))
                 .filter(report -> this.verifyGreaterNumber(report.getCarDetails().getYear(), parameters.getMinYear()))
-                .filter(report -> this.verifyString(parameters.getTractionType().toString(), report.getCarDetails().getCar().getDrivetrain().getTractionType().name()))
-                .filter(report -> this.verifyString(parameters.getFuelType().toString(), report.getCarDetails().getCar().getEngine().getFuelType().toString()))
-                .filter(report -> this.verifyString(parameters.getFuelType().toString(), report.getCarDetails().getCar().getEngine().getFuelType().toString()))
-                .filter(report -> this.verifyString(parameters.getGearbox().toString(), report.getCarDetails().getCar().getDrivetrain().getTransmission().getType().toString()))
+                .filter(report -> this.verifyString(parameters.getTractionType(), report.getCarDetails().getCar().getDrivetrain().getTractionType().name()))
+                .filter(report -> this.verifyString(parameters.getFuelType(), report.getCarDetails().getCar().getEngine().getFuelType().toString()))
+                .filter(report -> this.verifyString(parameters.getGearbox(), report.getCarDetails().getCar().getDrivetrain().getTransmission().getType().toString()))
                 .map(report -> reportMapper.reportToShortReport(report))
                 .collect(Collectors.toList());
+
+        if (reportList.isEmpty())
+            throw new UserException(Constants.NO_REPORT_FOUND);
+
+        return reportList;
     }
 
     @Override
@@ -147,10 +152,10 @@ public class ReportServiceImpl implements ReportService {
             throw new BadPayloadException(Constants.NOT_ADMIN_USER_TOKEN);
     }
 
-    private boolean verifyString(String queryValue, String reportValue) {
-        if(queryValue == null)
+    private <T> boolean  verifyString(T queryValue, String reportValue) {
+        if(queryValue == null || reportValue == null)
             return true;
-        return queryValue.equals(reportValue);
+        return queryValue.toString().equals(reportValue);
     }
 
     private boolean verifyGreaterNumber(Long bigNumber, Long smallNumber) {
