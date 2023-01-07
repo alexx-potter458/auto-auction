@@ -6,16 +6,16 @@
     that the car should have.
 
 ## Main business requirements 1️⃣0️⃣: 
-    💡 As a user I want to add all the car parts in a very detailed manner;
-    💡 As a user I want to use the existing car parts and create a car by using them;
-    💡 As a user I want too see a list of all the users;
-    💡 As a user I create an account and authenticate;
-    💡 As a user I want delete an account by email;
-    💡 As a user I want to see all the reports in a detailed form and in a short form;
-    💡 As a user I want to see a specific report by id in a detailed form;
-    💡 As a user I want to add a report;      ➡️ Only if I'm authenticated;
-    💡 As a user I want to approve a report;  ➡️ Only if I'm an admin;
-    💡 As a user I want to buy a car;         ➡️ Only if I'm authenticated;
+    0️⃣💡 As a user I want to add all the car parts in a very detailed manner;
+    1️⃣💡 As a user I want to use the existing car parts and create a car by using them;
+    2️⃣💡 As a user I want too see a list of all the users;
+    3️⃣💡 As a user I create an account and authenticate;
+    4️⃣💡 As a user I want delete an account by email;
+    5️⃣💡 As a user I want to see all the reports in a detailed form and in a short form;
+    6️⃣💡 As a user I want to see a specific report by id in a detailed form;
+    7️⃣💡 As a user I want to add a report;      ➡️ Only if I'm authenticated;
+    8️⃣💡 As a user I want to approve a report;  ➡️ Only if I'm an admin;
+    9️⃣💡 As a user I want to buy a car;         ➡️ Only if I'm authenticated;
     
 
 ## Application features:
