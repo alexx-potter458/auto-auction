@@ -12,7 +12,7 @@
 	<artifactId>auto-auctions</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>auto-auctions</name>
-	<description>This is a REST API for selling cars.</description>
+	<description>This is a website for selling cars.</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -48,11 +48,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<version>3.0.1</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.0.2</version>
 		</dependency>
 	</dependencies>
 
