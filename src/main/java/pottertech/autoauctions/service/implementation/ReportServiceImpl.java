@@ -18,7 +18,6 @@ import pottertech.autoauctions.mapper.ReportMapper;
 import pottertech.autoauctions.repository.CarDetailsRepository;
 import pottertech.autoauctions.repository.CarRepository;
 import pottertech.autoauctions.repository.ReportRepository;
-import pottertech.autoauctions.repository.TokenRepository;
 import pottertech.autoauctions.service.ReportService;
 
 import java.util.List;
@@ -34,9 +33,6 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     CarRepository carRepository;
-
-    @Autowired
-    TokenRepository tokenRepository;
 
     @Autowired
     ReportMapper reportMapper;
@@ -141,15 +137,15 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private void verifyUserToken(String token) {
-        if(this.tokenRepository.findOneByName(token) == null || this.tokenRepository.findOneByName(token).getUser() == null)
-            throw new BadPayloadException(Constants.WRONG_USER_TOKEN);
+//        if(this.tokenRepository.findOneByName(token) == null || this.tokenRepository.findOneByName(token).getUser() == null)
+//            throw new BadPayloadException(Constants.WRONG_USER_TOKEN);
     }
 
     private void verifyUserAdmin(String token) {
-        verifyUserToken(token);
+//        verifyUserToken(token);
 
-        if(!this.tokenRepository.findOneByName(token).getUser().isAdmin())
-            throw new BadPayloadException(Constants.NOT_ADMIN_USER_TOKEN);
+//        if(!this.tokenRepository.findOneByName(token).getUser().isAdmin())
+//            throw new BadPayloadException(Constants.NOT_ADMIN_USER_TOKEN);
     }
 
     private <T> boolean  verifyString(T queryValue, String reportValue) {

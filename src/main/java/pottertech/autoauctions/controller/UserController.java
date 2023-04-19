@@ -1,20 +1,15 @@
 package pottertech.autoauctions.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pottertech.autoauctions.dto.LoginDto;
 import pottertech.autoauctions.dto.PartialUserDto;
 import pottertech.autoauctions.dto.UserDto;
-import pottertech.autoauctions.entity.Token;
 import pottertech.autoauctions.service.implementation.UserServiceImpl;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -25,9 +20,10 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getUsers());
     }
 
-    @PostMapping
-    public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserDto userDTO) {
-        return ResponseEntity.ok(this.userService.addUser(userDTO));
+    @PostMapping("/register")
+    public String addUser(@ModelAttribute UserDto userDTO) {
+        this.userService.addUser(userDTO);
+        return "redirect:/user/login?registered";
     }
 
     @DeleteMapping("/{email}")
@@ -35,8 +31,9 @@ public class UserController {
         return ResponseEntity.ok(this.userService.deleteUserByEmail(email));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Token> login(@RequestBody LoginDto loginDto){
-        return ResponseEntity.ok(this.userService.login(loginDto));
-    }
+    @GetMapping("/login")
+    public String showLogInForm(){ return "login"; }
+
+    @GetMapping("/register")
+    public String showRegisterForm(){ return "register"; }
 }

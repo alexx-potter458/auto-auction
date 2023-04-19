@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add engine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .login-form {
+            width: 340px;
+            margin: 50px auto;
+            font-size: 15px;
+        }
+
+        .login-form form {
+            margin-bottom: 15px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        .login-form h2 {
+            font-size: 24px;
+            margin: 0 0 15px;
+        }
+
+        .form-control, .btn {
+            border-radius: 4px;
+        }
+
+        .btn {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .fa {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="login-form">
+    <form th:action="@{/car/engine}" method="POST">
+        <h2 class="text-center">Add engine</h2>
+        <p th:if="${param.success}" class="text-success">Engine added!</p>
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
+                </div>
+                <input type="text" class="form-control" name="name" placeholder="Engine code" required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-horse"></i></span>
+                </div>
+                <input type="text" class="form-control" name="power" placeholder="Power" required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-wrench"></i></span>
+                </div>
+                <input type="text" class="form-control" name="torque" placeholder="Torque" required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-prescription-bottle"></i></span>
+                </div>
+                <input type="text" class="form-control" name="capacity" placeholder="Capacity" required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-filter"></i></span>
+                </div>
+                <select class="form-control" name="fuelType" required>
+                    <option value="DIESEL">DIESEL</option>
+                    <option value="PETROL">PETROL</option>
+                    <option value="ELECTRIC">ELECTRIC</option>
+                    <option value="GAS">GAS</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-block">Save</button>
+        </div>
+        <a class="btn btn-secondary btn-block" href="/">Back</a>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

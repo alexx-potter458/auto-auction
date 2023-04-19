@@ -2,7 +2,10 @@ package pottertech.autoauctions.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import pottertech.autoauctions.Constants;
 import pottertech.autoauctions.dto.FilterDto;
 import pottertech.autoauctions.dto.ReportApprovalDto;
@@ -12,20 +15,23 @@ import pottertech.autoauctions.entity.Report;
 import pottertech.autoauctions.service.implementation.ReportServiceImpl;
 import java.util.List;
 
-@RestController
-@RequestMapping("/report")
+@Controller
+//@RequestMapping("/report")
 public class ReportController {
     @Autowired
     ReportServiceImpl reportService;
 
-    @GetMapping
-    public ResponseEntity<List<Report>> getAllReports() {
-        return ResponseEntity.ok(this.reportService.getAllReports());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<Report>> getAllReports() {
+//        return ResponseEntity.ok(this.reportService.getAllReports());
+//    }
 
-    @GetMapping("/short")
-    public ResponseEntity<List<ShortReportDto>> getAllReportsShort() {
-        return ResponseEntity.ok(this.reportService.getAllReportsShort());
+    @GetMapping("/")
+    public String getAllReportsShort(Model model) {
+        List<ShortReportDto> cars =  this.reportService.getAllReportsShort();
+        model.addAttribute(cars);
+
+        return "home";
     }
 
     @GetMapping("{id}")

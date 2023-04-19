@@ -15,4 +15,12 @@ public class LoginDto {
 
     @NotNull(message = Constants.PASSWORD_NOT_NULL)
     private String password;
+
+    @Override
+    public String toString() {
+        return "LoginDto{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

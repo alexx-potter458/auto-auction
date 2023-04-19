@@ -19,6 +19,20 @@ public class UserDto {
     @NotNull(message = Constants.EMAIL_NOT_NULL)
     private String email;
 
+    @NotNull(message = Constants.EMAIL_NOT_NULL)
+    private String username;
+
     @NotNull(message = Constants.PASSWORD_NOT_NULL)
     private String password;
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

@@ -11,9 +11,6 @@ import pottertech.autoauctions.repository.*;
 @Component
 public class ReportMapper {
     @Autowired
-    TokenRepository tokenRepository;
-
-    @Autowired
     CarDetailsRepository carDetailsRepository;
 
     @Autowired
@@ -23,7 +20,7 @@ public class ReportMapper {
         CarDetails carDetails = this.carMapper.reportDtoToCarDetails(reportDto);
 
         return Report.builder()
-                .user(this.tokenRepository.findOneByName(reportDto.getUserToken()).getUser())
+//                .user(this.tokenRepository.findOneByName(reportDto.getUserToken()).getUser())
                 .carDetails(this.carDetailsRepository.findOneByCarAndKilometrageAndYearAndPrice(carDetails.getCar(), carDetails.getKilometrage(), carDetails.getYear(), carDetails.getPrice()))
                 .isApproved(false)
                 .isBought(false)

@@ -1,32 +1,31 @@
 package pottertech.autoauctions.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pottertech.autoauctions.Constants;
-import pottertech.autoauctions.dto.LoginDto;
 import pottertech.autoauctions.dto.PartialUserDto;
 import pottertech.autoauctions.dto.UserDto;
-import pottertech.autoauctions.entity.Token;
+import pottertech.autoauctions.entity.Authority;
 import pottertech.autoauctions.entity.User;
 import pottertech.autoauctions.exception.BadPayloadException;
 import pottertech.autoauctions.exception.UserException;
 import pottertech.autoauctions.mapper.UserMapper;
-import pottertech.autoauctions.repository.TokenRepository;
 import pottertech.autoauctions.repository.UserRepository;
 import pottertech.autoauctions.service.UserService;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private TokenRepository tokenRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -67,22 +66,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Token login(LoginDto loginDto) {
-        User user = this.userRepository.findOneByEmailAndPassword(loginDto.getEmail(), loginDto.getPassword());
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = this.userRepository.findOneByUsername(username);
 
         if (user == null)
-            throw new BadPayloadException(Constants.NO_USER_FOUND_FOR_EMAIL_OR_PASSWORD);
+            throw new BadPayloadException(Constants.NO_USER_FOUND);
 
-        Token token = this.tokenRepository.findOneByUser(user);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),
+                user.getPassword(),user.getEnabled(), user.getAccountNotExpired(),
+                user.getCredentialsNotExpired(),user.getAccountNotLocked(),getAuthorities(user.getAuthorities()));
+    }
 
-        if(token != null)
-            return token;
-
-        Token token1 = Token.builder()
-                    .user(user)
-                    .name(UUID.randomUUID().toString())
-                    .build();
-
-        return this.tokenRepository.save(token1);
+    private Collection<? extends GrantedAuthority> getAuthorities(Set<Authority> authorities) {
+        if (authorities == null){
+            return new HashSet<>();
+        } else if (authorities.size() == 0){
+            return new HashSet<>();
+        }
+        else{
+            return authorities.stream()
+                    .map(Authority::getRole)
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toSet());
+        }
     }
 }

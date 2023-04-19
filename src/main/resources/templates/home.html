@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+<head>
+  <meta charset="UTF-8">
+  <title>List of Cars</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-6zxH5a0y5h5zl5D5Cpcp9xJH7n+YNZbo8k7fKM6zjp2JlFrB+1kb8G7Mhc6dSx6T4f6/mQ8W+Jj3qpk4zNh4g=="
+        crossorigin="anonymous"/>
+
+  <!-- Custom CSS -->
+  <style>
+        .car {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .car-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .car-subtitle {
+            font-size: 16px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .car-price {
+            font-size: 16px;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        .buy-btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>List of Cars</h1>
+
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="car" th:each="car : ${cars}">
+        <div class="car-title" th:text="${car.carName}"></div>
+        <div class="car-subtitle" th:text="${car.carKilometrage + ' km, ' + car.carYear}"></div>
+        <div class="car-price" th:text="'$' + ${car.carPrice}"></div>
+        <button class="btn btn-primary buy-btn"><i class="fas fa-shopping-cart"></i> Buy</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPh

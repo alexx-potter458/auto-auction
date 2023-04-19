@@ -3,6 +3,8 @@ package pottertech.autoauctions.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -15,6 +17,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String username;
+
     private String firstname;
 
     private String lastname;
@@ -23,6 +27,38 @@ public class User {
 
     private String password;
 
-    @Column(name = "is_admin")
-    private boolean isAdmin;
+    @Singular
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="authority_id", referencedColumnName = "id"))
+    private Set<Authority> authorities;
+
+    @Builder.Default
+    private Boolean enabled = true;
+
+    @Builder.Default
+    private Boolean accountNotExpired = true;
+
+    @Builder.Default
+    private Boolean accountNotLocked = true;
+
+    @Builder.Default
+    private Boolean credentialsNotExpired = true;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", authorities=" + authorities +
+                ", enabled=" + enabled +
+                ", accountNotExpired=" + accountNotExpired +
+                ", accountNotLocked=" + accountNotLocked +
+                ", credentialsNotExpired=" + credentialsNotExpired +
+                '}';
+    }
 }

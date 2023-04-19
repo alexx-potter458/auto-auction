@@ -12,4 +12,6 @@ import pottertech.autoauctions.Constants;
 public class SimpleTypeDto {
     @NotNull(message = Constants.NAME_NOT_NULL)
     private String name;
+
+
 }
