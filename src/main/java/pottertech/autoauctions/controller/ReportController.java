@@ -1,42 +1,44 @@
 package pottertech.autoauctions.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import pottertech.autoauctions.Constants;
 import pottertech.autoauctions.dto.FilterDto;
 import pottertech.autoauctions.dto.ReportApprovalDto;
 import pottertech.autoauctions.dto.ReportDto;
 import pottertech.autoauctions.dto.ShortReportDto;
-import pottertech.autoauctions.entity.Report;
 import pottertech.autoauctions.service.implementation.ReportServiceImpl;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/report")
 public class ReportController {
     @Autowired
     ReportServiceImpl reportService;
 
-//    @GetMapping
-//    public ResponseEntity<List<Report>> getAllReports() {
-//        return ResponseEntity.ok(this.reportService.getAllReports());
-//    }
-
     @GetMapping("/")
     public String getAllReportsShort(Model model) {
-        List<ShortReportDto> cars =  this.reportService.getAllReportsShort();
-        model.addAttribute(cars);
+        try{
+            List<ShortReportDto> cars = this.reportService.getAllReportsShort();
+            model.addAttribute("cars", cars);
+        } catch (Exception ignored) {}
 
         return "home";
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Report> getReport(@PathVariable String id) {
-        return ResponseEntity.ok(this.reportService.getReport(Long.parseLong(id)));
+    @GetMapping("/report/add")
+    public String addReport() {
+        return "add-report";
+    }
+
+    @PostMapping("/report/add")
+    public String addReport(HttpServletRequest request, @ModelAttribute ReportDto reportDto) {
+        String username = request.getUserPrincipal().getName();
+        this.reportService.addReport(reportDto, username);
+
+        return "redirect:/report/add?success";
     }
 
     @GetMapping("/filtered")
@@ -45,22 +47,16 @@ public class ReportController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<Report> addReport(@RequestBody ReportDto reportDto) {
-        return ResponseEntity.ok(this.reportService.addReport(reportDto));
-    }
-
-    @PatchMapping
-    public ResponseEntity<String> approveReport(@RequestBody ReportApprovalDto reportApprovalDto) {
+    @RequestMapping("/approve")
+    public String approveReport(HttpServletRequest request, @ModelAttribute ReportApprovalDto reportApprovalDto) {
+        System.out.println("entered");
         this.reportService.approveReport(reportApprovalDto);
-
-        return ResponseEntity.ok(Constants.REPORT_APPROVED);
+        return"redirect:/";
     }
 
-    @PatchMapping("/buy")
-    public ResponseEntity<String> buyCar(@RequestBody ReportApprovalDto reportApprovalDto) {
+    @RequestMapping("/buy")
+    public String buyCar(HttpServletRequest request, @ModelAttribute ReportApprovalDto reportApprovalDto) {
         this.reportService.buyCar(reportApprovalDto);
-
-        return ResponseEntity.ok(Constants.CAR_BOUGHT);
+        return"redirect:/";
     }
 }

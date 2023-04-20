@@ -3,7 +3,6 @@ package pottertech.autoauctions.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,18 +34,27 @@ public class SecurityJpaConfig {
         return http
                 .authorizeHttpRequests()
                     .requestMatchers("/").permitAll()
+                    .requestMatchers("/approve").hasRole("ADMIN")
+                    .requestMatchers("/buy").hasAnyRole("ADMIN", "GUEST")
                     .requestMatchers("/car/**").hasRole("ADMIN")
                     .requestMatchers("/user/login").permitAll()
+                    .requestMatchers("/user/logout").permitAll()
                     .requestMatchers("/user/register").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .userDetailsService(userDetailsService)
                 .formLogin()
-                .loginPage("/user/login")
-                .loginProcessingUrl("/user/perform_login")
+                    .loginPage("/user/login")
+                    .loginProcessingUrl("/user/perform_login")
+                .and()
+                .logout()
+                    .logoutUrl("/user/logout")
+                    .logoutSuccessUrl("/user/login?logout")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/access_denied")
+                .accessDeniedPage("/user/access-denied")
                 .and()
                 .httpBasic(withDefaults())
                 .build();

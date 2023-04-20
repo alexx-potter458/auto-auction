@@ -76,8 +76,16 @@ public class CarMapper {
                 .build();
     }
 
+    public Car reportDtoDtoToCar(ReportDto carDto) {
+        return Car.builder()
+                .carModel(this.carModelRepository.findOneByName(carDto.getCarModel()))
+                .engine(this.engineRepository.findOneByName(carDto.getEngineCode()))
+                .drivetrain(this.drivetrainRepository.findOneByTransmissionAndTractionType(this.transmissionRepository.findOneByName(carDto.getTransmissionName()), carDto.getTractionType()))
+                .build();
+    }
+
     public CarDetails reportDtoToCarDetails(ReportDto reportDto) {
-        Car car = this.carDtoToCar(reportDto.getCar());
+        Car car = this.reportDtoDtoToCar(reportDto);
 
         return CarDetails.builder()
                 .kilometrage(reportDto.getKilometrage())

@@ -10,7 +10,6 @@ import pottertech.autoauctions.dto.ShortReportDto;
 import pottertech.autoauctions.entity.Car;
 import pottertech.autoauctions.entity.CarDetails;
 import pottertech.autoauctions.entity.Report;
-import pottertech.autoauctions.exception.BadPayloadException;
 import pottertech.autoauctions.exception.ReportException;
 import pottertech.autoauctions.exception.UserException;
 import pottertech.autoauctions.mapper.CarMapper;
@@ -98,10 +97,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report addReport(ReportDto reportDto) {
-        this.verifyUserToken(reportDto.getUserToken());
-
-        Car car = this.carMapper.carDtoToCar(reportDto.getCar());
+    public Report addReport(ReportDto reportDto, String username) {
+        Car car = this.carMapper.reportDtoDtoToCar(reportDto);
         if(this.carRepository.findOneByCarModelAndEngineAndDrivetrain(car.getCarModel(), car.getEngine(), car.getDrivetrain()) == null)
             this.carRepository.save(car);
 
@@ -110,23 +107,18 @@ public class ReportServiceImpl implements ReportService {
         if(this.carDetailsRepository.findOneByCarAndKilometrageAndYearAndPrice(carDetails.getCar(), carDetails.getKilometrage(), carDetails.getYear(), carDetails.getPrice()) == null)
             this.carDetailsRepository.save(carMapper.reportDtoToCarDetails(reportDto));
 
-        return this.reportRepository.save(this.reportMapper.reportDtoToReport(reportDto));
+        return this.reportRepository.save(this.reportMapper.reportDtoToReport(reportDto, username));
     }
 
     @Override
     public void approveReport(ReportApprovalDto reportApprovalDto) {
-        this.verifyUserAdmin(reportApprovalDto.getUserToken());
-
         Report report = this.reportRepository.findOneById(reportApprovalDto.getReportId());
-
         report.setApproved(true);
         this.reportRepository.save(report);
     }
 
     @Override
     public void buyCar(ReportApprovalDto reportApprovalDto) {
-        verifyUserToken(reportApprovalDto.getUserToken());
-
         Report report = this.reportRepository.findOneById(reportApprovalDto.getReportId());
 
         if(report.isBought())
@@ -134,18 +126,6 @@ public class ReportServiceImpl implements ReportService {
 
         report.setBought(true);
         this.reportRepository.save(report);
-    }
-
-    private void verifyUserToken(String token) {
-//        if(this.tokenRepository.findOneByName(token) == null || this.tokenRepository.findOneByName(token).getUser() == null)
-//            throw new BadPayloadException(Constants.WRONG_USER_TOKEN);
-    }
-
-    private void verifyUserAdmin(String token) {
-//        verifyUserToken(token);
-
-//        if(!this.tokenRepository.findOneByName(token).getUser().isAdmin())
-//            throw new BadPayloadException(Constants.NOT_ADMIN_USER_TOKEN);
     }
 
     private <T> boolean  verifyString(T queryValue, String reportValue) {

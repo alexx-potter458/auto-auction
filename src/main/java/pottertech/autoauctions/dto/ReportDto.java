@@ -1,6 +1,7 @@
 package pottertech.autoauctions.dto;
 
 import lombok.*;
+import pottertech.autoauctions.entity.TractionType;
 
 @Getter
 @Setter
@@ -12,5 +13,8 @@ public class ReportDto {
     private Long kilometrage;
     private Long year;
     private Long price;
-    private CarDto car;
+    private String carModel;
+    private String engineCode;
+    private String transmissionName;
+    private TractionType tractionType;
 }

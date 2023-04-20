@@ -11,7 +11,7 @@ public interface ReportService {
     List<Report> getAllReports();
     List<ShortReportDto> getAllReportsShort();
     List<ShortReportDto> getFilteredReports(FilterDto parameters);
-    Report addReport(ReportDto reportDto);
+    Report addReport(ReportDto reportDto, String user);
     Report getReport(Long id);
     void approveReport(ReportApprovalDto reportApprovalDto);
     void buyCar(ReportApprovalDto reportApprovalDto);

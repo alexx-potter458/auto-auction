@@ -21,7 +21,13 @@ public class CarController {
 
     @PostMapping("/manufacturer")
     public String addManufacturer(@Valid @ModelAttribute SimpleTypeDto simpleTypeDto) {
-        this.carService.addManufacturer(simpleTypeDto);
+        try {
+            this.carService.addManufacturer(simpleTypeDto);
+
+        } catch(Exception exception) {
+            return "redirect:/car/manufacturer?error";
+        }
+
         return "redirect:/car/manufacturer?success";
     }
 
@@ -32,7 +38,12 @@ public class CarController {
 
     @PostMapping("/transmission")
     public String addTransmission(@Valid @ModelAttribute TransmissionDto simpleTypeDto) {
-        this.carService.addTransmission(simpleTypeDto);
+        try {
+            this.carService.addTransmission(simpleTypeDto);
+        } catch(Exception exception) {
+            return "redirect:/car/transmission?error";
+        }
+
         return "redirect:/car/transmission?success";
     }
 
@@ -43,7 +54,12 @@ public class CarController {
 
     @PostMapping("/drivetrain")
     public String addDrivetrain(@Valid @ModelAttribute DrivetrainDto drivetrainDto) {
-        this.carService.addDrivetrain(drivetrainDto);
+        try {
+            this.carService.addDrivetrain(drivetrainDto);
+        } catch(Exception exception) {
+            return "redirect:/car/drivetrain?error";
+        }
+
         return "redirect:/car/drivetrain?success";
     }
 
@@ -54,7 +70,12 @@ public class CarController {
 
     @PostMapping("/engine")
     public String addEngine(@Valid @ModelAttribute EngineDto engineDto) {
-        this.carService.addEngine(engineDto);
+        try {
+            this.carService.addEngine(engineDto);
+        } catch(Exception exception) {
+            return "redirect:/car/engine?error";
+        }
+
         return "redirect:/car/engine?success";
     }
 
@@ -65,7 +86,12 @@ public class CarController {
 
     @PostMapping("/model")
     public String addCarModel(@Valid @ModelAttribute CarModelDto carModelDto) {
-        this.carService.addCarModel(carModelDto);
+        try {
+            this.carService.addCarModel(carModelDto);
+        } catch(Exception exception) {
+            return "redirect:/car/model?error";
+        }
+
         return "redirect:/car/model?success";
     }
 
@@ -76,7 +102,12 @@ public class CarController {
 
     @PostMapping
     public String addCar(@Valid @ModelAttribute CarDto carDto) {
-        this.carService.addCar(carDto);
+        try {
+            this.carService.addCar(carDto);
+        } catch(Exception exception) {
+            return "redirect:/car?error";
+        }
+
         return "redirect:/car?success";
     }
 }

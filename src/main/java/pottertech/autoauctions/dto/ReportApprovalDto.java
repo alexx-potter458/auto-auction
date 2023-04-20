@@ -9,5 +9,4 @@ import lombok.*;
 @NoArgsConstructor
 public class ReportApprovalDto {
     private Long reportId;
-    private String userToken;
 }

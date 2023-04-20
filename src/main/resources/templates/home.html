@@ -1,74 +1,128 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/default">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>List of Cars</title>
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-        crossorigin="anonymous">
-
-  <!-- Font Awesome CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-6zxH5a0y5h5zl5D5Cpcp9xJH7n+YNZbo8k7fKM6zjp2JlFrB+1kb8G7Mhc6dSx6T4f6/mQ8W+Jj3qpk4zNh4g=="
-        crossorigin="anonymous"/>
-
-  <!-- Custom CSS -->
+  <title>Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <style>
-        .car {
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 10px;
+        body {
+            background-color: #f5f5f5;
         }
 
-        .car-title {
-            font-size: 20px;
+        .nav-container {
+            width: 90%;
+            margin: 8px auto;
+            font-size: 15px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            display:flex
+        }
+
+        .container {
+            width: 500px;
+            margin: 20px auto;
+            font-size: 15px;
+            margin-bottom: 15px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        .login-form h2 {
+            font-size: 24px;
+            margin: 0 0 15px;
+        }
+
+        .btn {
+            font-size: 16px;
             font-weight: bold;
-            margin-bottom: 5px;
         }
 
-        .car-subtitle {
-            font-size: 16px;
-            color: #999;
-            margin-bottom: 5px;
-        }
-
-        .car-price {
-            font-size: 16px;
-            color: #007bff;
-            margin-bottom: 5px;
-        }
-
-        .buy-btn {
-            margin-top: 10px;
+        .fa {
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>List of Cars</h1>
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="nav-container">
+    <a class="navbar-brand" href="#">Auto auctions</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/report/add">Add auction</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">
+            Cars
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/car/manufacturer">Add manufacturer</a>
+            <a class="dropdown-item" href="/car/engine">Add engine</a>
+            <a class="dropdown-item" href="/car/transmission">Add transmission</a>
+            <a class="dropdown-item" href="/car/drivetrain">Add drivetrain</a>
+            <a class="dropdown-item" href="/car/model">Add car model</a>
+            <a class="dropdown-item" href="/car">Add car</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <form th:action="@{/user/logout}" method="post">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <button  class="mr-1 btn" type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
+  </div>
+</nav>
 
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
+<p th:if="${param.denied}" class="text-danger text-center">You have no access there!</p>
+
+
+<div class="container">
+  <h1 class="text-center">List of Cars for sale</h1>
+  <p th:if="${cars == null}" class="text-danger text-center">No car for sale</p>
+
+  <div class="row w-100">
+    <div th:if="cars" class="col-md-9 offset-md-2">
       <div class="car" th:each="car : ${cars}">
         <div class="car-title" th:text="${car.carName}"></div>
         <div class="car-subtitle" th:text="${car.carKilometrage + ' km, ' + car.carYear}"></div>
         <div class="car-price" th:text="'$' + ${car.carPrice}"></div>
-        <button class="btn btn-primary buy-btn"><i class="fas fa-shopping-cart"></i> Buy</button>
+
+        <div class="d-flex flex-row justify-content-end">
+          <p th:if="${car.bought}" class="text-success text-center">Car bought!</p>
+
+          <form  th:if="${car.approved && !car.bought}" th:action="@{/buy}" method="POST">
+            <input type="hidden" name="reportId" th:value="${car.reportId}">
+            <button th:action="@{submit}" class="btn btn-primary buy-btn"><i class="fas fa-shopping-cart"></i> Buy</button>
+          </form>
+
+          <form th:if="${!car.approved}" th:action="@{/approve}" method="GET">
+            <input type="hidden" name="reportId" th:value="${car.reportId}">
+            <button type="submit" class="btn btn-success buy-btn"><i class="fas fa-thumbs-up"></i> Approve</button>
+          </form>
+
+        </div>
       </div>
     </div>
   </div>
 
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPh
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

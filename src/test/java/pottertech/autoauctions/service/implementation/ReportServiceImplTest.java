@@ -187,7 +187,7 @@ class ReportServiceImplTest {
         when(this.carDetailsRepository.findOneByCarAndKilometrageAndYearAndPrice(any(), any(), any(), any())).thenReturn(new CarDetails());
         when(this.reportRepository.save(any())).thenReturn(new Report());
 
-        Report report = this.reportService.addReport(reportDto);
+        Report report = this.reportService.addReport(reportDto, "admin");
 
         assertNotNull(report);
     }
@@ -203,7 +203,7 @@ class ReportServiceImplTest {
         when(this.carDetailsRepository.findOneByCarAndKilometrageAndYearAndPrice(any(), any(), any(), any())).thenReturn(null);
         when(this.reportRepository.save(any())).thenReturn(new Report());
 
-        Report report = this.reportService.addReport(reportDto);
+        Report report = this.reportService.addReport(reportDto, "admin");
 
         assertNotNull(report);
     }

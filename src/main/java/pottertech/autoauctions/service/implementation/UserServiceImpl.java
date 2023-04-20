@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDto addUser(UserDto userDto) {
-        User user = this.userRepository.findOneByEmail(userDto.getEmail());
+        User user = this.userRepository.findOneByEmailOrUsername(userDto.getEmail(), userDto.getUsername());
 
         if (user != null)
             throw new UserException(Constants.USER_ALREADY_EXISTS);

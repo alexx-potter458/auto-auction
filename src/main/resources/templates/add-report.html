@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add engine</title>
+    <title>Add auction</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
@@ -94,57 +94,74 @@
 </nav>
 
 <div class="login-form">
-    <form th:action="@{/car/engine}" method="POST">
-        <h2 class="text-center">Add engine</h2>
-        <p th:if="${param.success}" class="text-success">Engine added!</p>
-        <p th:if="${param.error}" class="text-danger">Engine already exists!</p>
+    <form th:action="@{/report/add}" method="POST">
+        <h2 class="text-center">Add your auction</h2>
+        <p th:if="${param.error}" class="text-danger">Couldn't save the auction!</p>
+        <p th:if="${param.success}" class="text-success">Auction added!</p>
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
+                    <span class="input-group-text"><i class="fas fa-car"></i></span>
                 </div>
-                <input type="text" class="form-control" name="name" placeholder="Engine code" required="required">
+                <input type="text" class="form-control" name="carModel" placeholder="Car model name" required="required">
             </div>
         </div>
 
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-horse"></i></span>
+                    <span class="input-group-text"><i class="fas fa-industry"></i></span>
                 </div>
-                <input type="text" class="form-control" name="power" placeholder="Power" required="required">
+                <input type="text" class="form-control" name="engineCode" placeholder="Engine code" required="required">
             </div>
         </div>
 
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-wrench"></i></span>
+                    <span class="input-group-text"><i class="fas fa-cog"></i></span>
                 </div>
-                <input type="text" class="form-control" name="torque" placeholder="Torque" required="required">
+                <input type="text" class="form-control" name="transmissionName" placeholder="Transmission name" required="required">
             </div>
         </div>
 
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-prescription-bottle"></i></span>
+                    <span class="input-group-text"><i class="fas fa-truck-monster"></i></span>
                 </div>
-                <input type="text" class="form-control" name="capacity" placeholder="Capacity" required="required">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-filter"></i></span>
-                </div>
-                <select class="form-control" name="fuelType" required>
-                    <option value="DIESEL">DIESEL</option>
-                    <option value="PETROL">PETROL</option>
-                    <option value="ELECTRIC">ELECTRIC</option>
-                    <option value="GAS">GAS</option>
+                <select class="form-control" name="tractionType" required>
+                    <option value="AWD">AWD</option>
+                    <option value="RWD">RWD</option>
+                    <option value="FWD">FWD</option>
                 </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+                </div>
+                <input type="text" class="form-control" name="year" placeholder="Year" required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-road"></i></span>
+                </div>
+                <input type="text" class="form-control" name="kilometrage" placeholder="Kilometrage" required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-money-bill-wave"></i></span>
+                </div>
+                <input type="text" class="form-control" name="price" placeholder="Price" required="required">
             </div>
         </div>
 

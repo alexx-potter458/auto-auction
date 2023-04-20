@@ -14,13 +14,16 @@ public class ReportMapper {
     CarDetailsRepository carDetailsRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     CarMapper carMapper;
 
-    public Report reportDtoToReport(ReportDto reportDto){
+    public Report reportDtoToReport(ReportDto reportDto, String username){
         CarDetails carDetails = this.carMapper.reportDtoToCarDetails(reportDto);
 
         return Report.builder()
-//                .user(this.tokenRepository.findOneByName(reportDto.getUserToken()).getUser())
+                .user(this.userRepository.findOneByUsername(username))
                 .carDetails(this.carDetailsRepository.findOneByCarAndKilometrageAndYearAndPrice(carDetails.getCar(), carDetails.getKilometrage(), carDetails.getYear(), carDetails.getPrice()))
                 .isApproved(false)
                 .isBought(false)

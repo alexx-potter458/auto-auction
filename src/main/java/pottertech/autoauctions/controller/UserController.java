@@ -22,7 +22,12 @@ public class UserController {
 
     @PostMapping("/register")
     public String addUser(@ModelAttribute UserDto userDTO) {
-        this.userService.addUser(userDTO);
+        try {
+            this.userService.addUser(userDTO);
+        } catch(Exception exception) {
+            return "redirect:/user/register?error";
+        }
+
         return "redirect:/user/login?registered";
     }
 
@@ -36,4 +41,9 @@ public class UserController {
 
     @GetMapping("/register")
     public String showRegisterForm(){ return "register"; }
+
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "redirect:/?denied";
+    }
 }
