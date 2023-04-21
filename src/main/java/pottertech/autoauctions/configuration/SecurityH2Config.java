@@ -30,27 +30,27 @@ public class SecurityH2Config {
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User.withUsername("guest")
-                .password(passwordEncoder.encode("12345"))
-                .roles("USER")
-                .build());
+            .password(passwordEncoder.encode("12345"))
+            .roles("USER")
+            .build());
         manager.createUser(User.withUsername("admin")
-                .password(passwordEncoder.encode("12345"))
-                .roles("USER", "ADMIN")
-                .build());
+            .password(passwordEncoder.encode("12345"))
+            .roles("USER", "ADMIN")
+            .build());
         return manager;
     }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-                .authorizeRequests(auth -> auth
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/products/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .headers(headers -> headers.frameOptions().sameOrigin())
-                .httpBasic(withDefaults())
-                .build();
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+            .authorizeHttpRequests()
+            .requestMatchers("/h2-console/**").permitAll()
+            .requestMatchers("/products/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .headers(headers -> headers.frameOptions().sameOrigin())
+            .httpBasic(withDefaults())
+            .build();
     }
 }

@@ -22,7 +22,6 @@
         }
 
         .container {
-            width: 500px;
             margin: 20px auto;
             font-size: 15px;
             margin-bottom: 15px;
@@ -32,9 +31,24 @@
             padding: 30px;
         }
 
+        .login-form {
+            width: 500px;
+            margin: 50px auto;
+            font-size: 15px;
+        }
+
+        .container form {
+            display:flex
+            flex
+        }
+
         .login-form h2 {
             font-size: 24px;
             margin: 0 0 15px;
+        }
+
+        .form-control, .btn {
+            border-radius: 4px;
         }
 
         .btn {
@@ -89,17 +103,18 @@
 
 <p th:if="${param.denied}" class="text-danger text-center">You have no access there!</p>
 
-
 <div class="container">
   <h1 class="text-center">List of Cars for sale</h1>
   <p th:if="${cars == null}" class="text-danger text-center">No car for sale</p>
 
   <div class="row w-100">
-    <div th:if="cars" class="col-md-9 offset-md-2">
-      <div class="car" th:each="car : ${cars}">
-        <div class="car-title" th:text="${car.carName}"></div>
-        <div class="car-subtitle" th:text="${car.carKilometrage + ' km, ' + car.carYear}"></div>
-        <div class="car-price" th:text="'$' + ${car.carPrice}"></div>
+    <div th:if="cars.content" class="col-md-9 offset-md-2">
+      <div class="car card px-4 py-2 m-2"  th:if="cars" th:each="car : ${cars?.content}">
+        <div class="car-title" th:text="${car.carName + ' - ' + car.carYear}"></div>
+        <div class="car-title" th:text="${'Performance: ' + car.engine + ' - ' + car.drivetrain}"></div>
+        <div class="car-subtitle" th:text="${'Kilometrage: ' + car.carKilometrage + 'km'}"></div>
+        <div class="car-price" th:text="'Price: $' + ${car.carPrice}"></div>
+        <div class="car-price" th:text="'Owner: ' + ${car.name}"></div>
 
         <div class="d-flex flex-row justify-content-end">
           <p th:if="${car.bought}" class="text-success text-center">Car bought!</p>
@@ -119,6 +134,152 @@
     </div>
   </div>
 
+</div>
+
+<div th:if="cars.content">
+  <nav class="container d-flex justify-content-center py-4" th:if="${ cars?.totalPages > 0}" aria-label="Page navigation example">
+    <ul  class="pagination mb-0">
+
+      <li class="page-item">
+        <a th:if="${cars.number > 0}"
+           th:href="@{/(size=${cars.size}, page=${cars.number})}"
+           class="page-link" >
+          Previous
+        </a></li>
+      <li th:each="pageNumber : ${#numbers.sequence(1,T(java.lang.Math).min(7,cars.totalPages))}"
+          th:class="${pageNumber==cars.number + 1} ? 'page-item active':   'page-item'">
+        <a class="page-link"
+           th:text="${pageNumber}"
+           th:href="@{/(size=${cars.size}, page=${pageNumber})}">
+          1
+        </a></li>
+      <li
+          th:class="${cars.number>6} ? 'page-item active':  'page-item'"
+          th:if="${cars.totalPages > 6}"><a class="page-link" href="#">...</a></li>
+
+      <li th:if="${cars.number < cars.totalPages - 1}" class="page-item">
+        <a th:if="${cars.number < cars.totalPages}"
+           th:href="@{/(size=${cars.size}, page=${cars.number+2})}"
+           class="page-link" >
+          Next
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<div class="container">
+  <form th:action="@{/filter}" method="GET">
+    <h2 class="text-center">Filter</h2>
+
+    <div class="d-flex flex-wrap justify-content-between">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+          </div>
+          <input type="text" class="form-control" name="minPrice" placeholder="Min price">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+          </div>
+          <input type="text" class="form-control" name="maxPrice" placeholder="Max price">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-road"></i></span>
+          </div>
+          <input type="text" class="form-control" name="minKilometrage" placeholder="Min kilometrage">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-road"></i></span>
+          </div>
+          <input type="text" class="form-control" name="maxKilometrage" placeholder="Max kilometrage">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-horse"></i></span>
+          </div>
+          <input type="text" class="form-control" name="minPower" placeholder="Min power">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-horse"></i></span>
+          </div>
+          <input type="text" class="form-control" name="maxPower" placeholder="Max power">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+          </div>
+          <input type="text" class="form-control" name="minYear" placeholder="Min year">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+          </div>
+          <input type="text" class="form-control" name="maxYear" placeholder="Max year">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-truck-monster"></i></span>
+          </div>
+          <select class="form-control" name="tractionType">
+            <option></option>
+            <option value="AWD">AWD</option>
+            <option value="RWD">RWD</option>
+            <option value="FWD">FWD</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-gas-pump"></i></span>
+          </div>
+          <select class="form-control" name="fuelType">
+            <option></option>
+            <option value="DIESEL">DIESEL</option>
+            <option value="PETROL">PETROL</option>
+            <option value="ELECTRIC">ELECTRIC</option>
+            <option value="GAS">GAS</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-row justify-content-center">
+      <a class="btn btn-secondary btn-block w-25 mr-1" href="/">Back</a>
+      <button type="submit" class="btn btn-success w-25 ml-1">Filter</button>
+    </div>
+  </form>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

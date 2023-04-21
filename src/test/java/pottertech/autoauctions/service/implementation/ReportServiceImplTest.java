@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 import pottertech.autoauctions.Constants;
 import pottertech.autoauctions.dto.FilterDto;
 import pottertech.autoauctions.dto.ReportApprovalDto;
@@ -99,7 +100,7 @@ class ReportServiceImplTest {
         when(this.reportRepository.findAll()).thenReturn(reports);
         when(this.reportMapper.reportToShortReport(any())).thenReturn(new ShortReportDto());
 
-        List<ShortReportDto> reports1 = this.reportService.getAllReportsShort();
+        List<ShortReportDto> reports1 = this.reportService.getAllReportsShort(PageRequest.of(0, 5));
 
         assertNotNull(reports1);
     }
@@ -109,7 +110,7 @@ class ReportServiceImplTest {
         List<Report> reports = new ArrayList<>();
         when(this.reportRepository.findAll()).thenReturn(reports);
 
-        Exception exception = assertThrows(UserException.class, () -> this.reportService.getAllReportsShort());
+        Exception exception = assertThrows(UserException.class, () -> this.reportService.getAllReportsShort(PageRequest.of(0, 5)));
 
         assertEquals(Constants.NO_REPORT_FOUND, exception.getMessage());
     }

@@ -1,6 +1,8 @@
 package pottertech.autoauctions.controller;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +16,11 @@ public class CarController {
     @Autowired
     private CarServiceImpl carService;
 
+    Logger log = LoggerFactory.getLogger(CarController.class);
+
     @GetMapping("/manufacturer")
     public String showManufacturerForm(Model model) {
+        log.info("---> Add manufacturer page...");
         return "add-manufacturer";
     }
 
@@ -23,7 +28,6 @@ public class CarController {
     public String addManufacturer(@Valid @ModelAttribute SimpleTypeDto simpleTypeDto) {
         try {
             this.carService.addManufacturer(simpleTypeDto);
-
         } catch(Exception exception) {
             return "redirect:/car/manufacturer?error";
         }
@@ -33,6 +37,7 @@ public class CarController {
 
     @GetMapping("/transmission")
     public String showTransmissionForm(Model model) {
+        log.info("---> Add transmission page...");
         return "add-transmission";
     }
 
@@ -49,6 +54,7 @@ public class CarController {
 
     @GetMapping("/drivetrain")
     public String showDrivetrainForm(Model model) {
+        log.info("---> Add drivetrain page...");
         return "add-drivetrain";
     }
 
@@ -65,6 +71,7 @@ public class CarController {
 
     @GetMapping("/engine")
     public String showEngineForm(Model model) {
+        log.info("---> Add engine page...");
         return "add-engine";
     }
 
@@ -81,6 +88,7 @@ public class CarController {
 
     @GetMapping("/model")
     public String showCarModelForm(Model model) {
+        log.info("---> Add car model page...");
         return "add-car-model";
     }
 
@@ -97,6 +105,7 @@ public class CarController {
 
     @GetMapping
     public String showCarForm(Model model) {
+        log.info("---> Add car page...");
         return "add-car";
     }
 

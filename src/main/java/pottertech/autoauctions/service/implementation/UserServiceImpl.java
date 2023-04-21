@@ -1,5 +1,7 @@
 package pottertech.autoauctions.service.implementation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +23,6 @@ import pottertech.autoauctions.service.UserService;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private UserMapper userMapper;
+
+    Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Override
     public List<PartialUserDto> getUsers() {
@@ -46,6 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDto addUser(UserDto userDto) {
+        log.info("---> Adding user...");
         User user = this.userRepository.findOneByEmailOrUsername(userDto.getEmail(), userDto.getUsername());
 
         if (user != null)
@@ -67,6 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("---> Loading user...");
         User user = this.userRepository.findOneByUsername(username);
 
         if (user == null)

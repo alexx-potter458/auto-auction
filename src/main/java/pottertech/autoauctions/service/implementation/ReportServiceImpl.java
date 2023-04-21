@@ -1,6 +1,11 @@
 package pottertech.autoauctions.service.implementation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pottertech.autoauctions.Constants;
 import pottertech.autoauctions.dto.FilterDto;
@@ -10,7 +15,6 @@ import pottertech.autoauctions.dto.ShortReportDto;
 import pottertech.autoauctions.entity.Car;
 import pottertech.autoauctions.entity.CarDetails;
 import pottertech.autoauctions.entity.Report;
-import pottertech.autoauctions.exception.ReportException;
 import pottertech.autoauctions.exception.UserException;
 import pottertech.autoauctions.mapper.CarMapper;
 import pottertech.autoauctions.mapper.ReportMapper;
@@ -39,42 +43,30 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     CarMapper carMapper;
 
+    Logger log = LoggerFactory.getLogger(ReportService.class);
+
     @Override
-    public List<Report> getAllReports() {
-        List<Report> reportList = this.reportRepository.findAll();
+    public Page<ShortReportDto> getAllReportsShort(Pageable pageable) {
+        log.info("---> Getting all reports...");
 
-        if (reportList.isEmpty())
+        Page<Report> reportList = this.reportRepository.findAll(pageable);
+        Page<ShortReportDto> shortReportList = reportList
+                .map(report -> reportMapper.reportToShortReport(report));
+
+        if (reportList.isEmpty()) {
+            log.warn("---> No report found!");
             throw new UserException(Constants.NO_REPORT_FOUND);
+        }
 
-        return reportList;
+        log.info("---> Got reports!");
+        return shortReportList;
     }
 
     @Override
-    public Report getReport(Long id) {
-        Report report = this.reportRepository.findOneById(id);
+    public Page<ShortReportDto> getFilteredReports(FilterDto parameters, Pageable pageable) {
+        log.info("---> Getting all reports...");
 
-        if (report == null)
-            throw new UserException(Constants.NO_REPORT_FOUND);
-
-        return report;
-    }
-
-    @Override
-    public List<ShortReportDto> getAllReportsShort() {
-        List<ShortReportDto> reportList = this.reportRepository.findAll()
-                .stream()
-                .map(report -> reportMapper.reportToShortReport(report))
-                .collect(Collectors.toList());
-
-        if (reportList.isEmpty())
-            throw new UserException(Constants.NO_REPORT_FOUND);
-
-        return reportList;
-    }
-
-    @Override
-    public List<ShortReportDto> getFilteredReports(FilterDto parameters) {
-        List<ShortReportDto> reportList = this.reportRepository.findAll()
+        List<ShortReportDto> reportList = this.reportRepository.findAll(pageable)
                 .stream()
                 .filter(report -> this.verifyGreaterNumber(parameters.getMaxPower(), report.getCarDetails().getCar().getEngine().getPower()))
                 .filter(report -> this.verifyGreaterNumber(parameters.getMaxKilometrage(), report.getCarDetails().getKilometrage()))
@@ -90,28 +82,40 @@ public class ReportServiceImpl implements ReportService {
                 .map(report -> reportMapper.reportToShortReport(report))
                 .collect(Collectors.toList());
 
-        if (reportList.isEmpty())
+        if (reportList.isEmpty()){
+            log.warn("---> No report found!");
             throw new UserException(Constants.NO_REPORT_FOUND);
+        }
 
-        return reportList;
+        log.info("---> Got reports!");
+        return new PageImpl<>(reportList, pageable, reportList.size());
     }
 
     @Override
     public Report addReport(ReportDto reportDto, String username) {
+        log.info("---> Adding a report...");
+
         Car car = this.carMapper.reportDtoDtoToCar(reportDto);
-        if(this.carRepository.findOneByCarModelAndEngineAndDrivetrain(car.getCarModel(), car.getEngine(), car.getDrivetrain()) == null)
+        if(this.carRepository.findOneByCarModelAndEngineAndDrivetrain(car.getCarModel(), car.getEngine(), car.getDrivetrain()) == null) {
+            log.info("---> Car not found, adding car...");
             this.carRepository.save(car);
+        }
 
         CarDetails carDetails = this.carMapper.reportDtoToCarDetails(reportDto);
 
-        if(this.carDetailsRepository.findOneByCarAndKilometrageAndYearAndPrice(carDetails.getCar(), carDetails.getKilometrage(), carDetails.getYear(), carDetails.getPrice()) == null)
+        if(this.carDetailsRepository.findOneByCarAndKilometrageAndYearAndPrice(carDetails.getCar(), carDetails.getKilometrage(), carDetails.getYear(), carDetails.getPrice()) == null){
+            log.info("---> Saving car details...");
             this.carDetailsRepository.save(carMapper.reportDtoToCarDetails(reportDto));
+        }
 
+        log.info("---> Saving report...");
         return this.reportRepository.save(this.reportMapper.reportDtoToReport(reportDto, username));
     }
 
     @Override
     public void approveReport(ReportApprovalDto reportApprovalDto) {
+        log.info("---> Approving report!");
+
         Report report = this.reportRepository.findOneById(reportApprovalDto.getReportId());
         report.setApproved(true);
         this.reportRepository.save(report);
@@ -119,11 +123,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public void buyCar(ReportApprovalDto reportApprovalDto) {
+        log.info("---> Approving report!");
+
         Report report = this.reportRepository.findOneById(reportApprovalDto.getReportId());
-
-        if(report.isBought())
-            throw new ReportException(Constants.CAR_AlREADY_BOUGHT);
-
         report.setBought(true);
         this.reportRepository.save(report);
     }
