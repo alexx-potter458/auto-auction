@@ -8,22 +8,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pottertech.autoauctions.Constants;
-import pottertech.autoauctions.dto.LoginDto;
 import pottertech.autoauctions.dto.PartialUserDto;
 import pottertech.autoauctions.dto.UserDto;
-import pottertech.autoauctions.entity.Token;
 import pottertech.autoauctions.entity.User;
-import pottertech.autoauctions.exception.BadPayloadException;
 import pottertech.autoauctions.exception.UserException;
 import pottertech.autoauctions.mapper.UserMapper;
-import pottertech.autoauctions.repository.TokenRepository;
 import pottertech.autoauctions.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
@@ -32,15 +27,10 @@ class UserServiceImplTest {
     private User completeUser;
     private List<User> userList;
     private UserDto userDto;
-    private Token token;
-    private LoginDto loginDto;
     private PartialUserDto partialUserDto;
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private TokenRepository tokenRepository;
 
     @Mock
     private UserMapper userMapper;
@@ -55,7 +45,6 @@ class UserServiceImplTest {
                 .firstname("Alex")
                 .lastname("Potter")
                 .email("alex.potter@gmail.com")
-                .isAdmin(false)
                 .id(Long.parseLong("1"))
                 .build();
         userList.add(completeUser);
@@ -71,17 +60,6 @@ class UserServiceImplTest {
                 .firstname("Alex")
                 .lastname("Potter")
                 .email("alex.potter@gmail.com")
-                .build();
-
-        token = Token.builder()
-                .user(completeUser)
-                .id(Long.parseLong("1"))
-                .name("random-token")
-                .build();
-
-        loginDto = LoginDto.builder()
-                .email(completeUser.getEmail())
-                .password(completeUser.getPassword())
                 .build();
     }
 
@@ -109,7 +87,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Add user successfully")
     void addUser() {
-        when(this.userRepository.findOneByEmail(userDto.getEmail())).thenReturn(null);
+        when(this.userRepository.findOneByEmailOrUsername(userDto.getEmail(), userDto.getUsername())).thenReturn(null);
         when(this.userMapper.userToUserDto(any())).thenReturn(this.userDto);
 
         UserDto response = this.userService.addUser(this.userDto);
@@ -121,7 +99,7 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Add user failed")
     void addUser2() {
-        when(this.userRepository.findOneByEmail(userDto.getEmail())).thenReturn(completeUser);
+        when(this.userRepository.findOneByEmailOrUsername(userDto.getEmail(), userDto.getUsername())).thenReturn(completeUser);
 
         Exception exception = assertThrows(UserException.class, () -> this.userService.addUser(this.userDto));
 
@@ -149,38 +127,5 @@ class UserServiceImplTest {
         Exception exception = assertThrows(UserException.class, () -> this.userService.deleteUserByEmail(completeUser.getEmail()));
 
         assertEquals(Constants.NO_USER_FOUND_FOR_EMAIL, exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("correct login with existing token")
-    void login() {
-        when(this.userRepository.findOneByEmailAndPassword(completeUser.getEmail(), completeUser.getPassword())).thenReturn(completeUser);
-        when(this.tokenRepository.findOneByUser(completeUser)).thenReturn(token);
-
-        Token response = this.userService.login(loginDto);
-
-        assertNotNull(response);
-    }
-
-    @Test
-    @DisplayName("correct login with no existing token")
-    void login2() {
-        when(this.userRepository.findOneByEmailAndPassword(completeUser.getEmail(), completeUser.getPassword())).thenReturn(completeUser);
-        when(this.tokenRepository.findOneByUser(completeUser)).thenReturn(null);
-        when(this.tokenRepository.save(any())).then(returnsFirstArg());
-
-        Token response = this.userService.login(loginDto);
-
-        assertNotNull(response);
-    }
-
-    @Test
-    @DisplayName("wrong login")
-    void login3() {
-        when(this.userRepository.findOneByEmailAndPassword(completeUser.getEmail(), completeUser.getPassword())).thenReturn(null);
-
-        Exception exception = assertThrows(BadPayloadException.class, () -> this.userService.login(loginDto));
-
-        assertEquals(Constants.NO_USER_FOUND_FOR_EMAIL_OR_PASSWORD, exception.getMessage());
     }
 }

@@ -9,7 +9,6 @@ import pottertech.autoauctions.entity.TractionType;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportDto {
-    private String userToken;
     private Long kilometrage;
     private Long year;
     private Long price;
